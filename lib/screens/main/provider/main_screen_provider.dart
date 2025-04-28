@@ -19,8 +19,8 @@ class MainScreenProvider extends ChangeNotifier{
   navigateToScreen(String screenName) {
     switch (screenName) {
       case 'Dashboard':
-        // HeaderText = "Dashboard";
-        // selectedScreen = DashboardScreen();
+        HeaderText = "Dashboard";
+        selectedScreen = DashboardScreen();
         break; // Break statement needed here
       case 'Category':
         HeaderText = "Category";

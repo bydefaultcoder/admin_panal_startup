@@ -1,4 +1,4 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:get/get_connect.dart';
 import 'package:admin/models/api_response.dart';
@@ -15,9 +15,8 @@ import '../../../models/category.dart';
 import '../../models/brand.dart';
 import '../../models/sub_category.dart';
 import '../../models/variant.dart';
-import '../../../models/category.dart';
-import 'package:admin/models/api_response.dart';
 import 'package:admin/utility/snack_bar_helper.dart';
+
 class DataProvider extends ChangeNotifier {
   HttpService service = HttpService();
 
@@ -27,7 +26,6 @@ class DataProvider extends ChangeNotifier {
 
   List<SubCategory> _allSubCategories = [];
   List<SubCategory> _filteredSubCategories = [];
-
   List<SubCategory> get subCategories => _filteredSubCategories;
 
   List<Brand> _allBrands = [];
@@ -62,127 +60,199 @@ class DataProvider extends ChangeNotifier {
   List<MyNotification> _filteredNotifications = [];
   List<MyNotification> get notifications => _filteredNotifications;
 
-  DataProvider() {}
-
-
-    getAllCategory() async {
-      try{
-      Response response = await service.getItems(endpointUrl: "categories");
-
-      if(response.isOk){
-        ApiResponse<List<Category>> apiResponse = ApiResponse<List<Category>>.fromJson(
-          response.body,
-          (json)=>(json as List).map((toElement)=>Category.fromJson(toElement)).toList()
-          );
-        if(apiResponse.success==true){
-          _allCategories = apiResponse.data ?? [];
-          _filteredCategories = List.from(_allCategories);
-          notifyListeners();
-        }else{
-          SnackBarHelper.showErrorSnackBar('Failed to add category: ${apiResponse.message}');
-        }
-      }else{
-    //     SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
-      }
-    }catch(e){
-    //   print(e);
-      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-      rethrow;
-    }
-
+  DataProvider(){
+    getAllCategory();
   }
 
+  //================== Categories ==================//
+  getAllCategory() async {
+    await _fetchList<Category>("categories", (data) {
+      _allCategories = data;
+      _filteredCategories = List.from(_allCategories);
+    });
+  }
 
-      filterCategories() async {
-      try{
-      Response response = await service.getItems(endpointUrl: "categories");
+  filterCategories(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredCategories = List.from(_allCategories);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredCategories = _allCategories.where((categ) {
+        return (categ.name ?? "").toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
 
-      if(response.isOk){
-        ApiResponse<List<Category>> apiResponse = ApiResponse<List<Category>>.fromJson(
+  //================== SubCategories ==================//
+  getAllSubCategory() async {
+    await _fetchList<SubCategory>("sub-categories", (data) {
+      _allSubCategories = data;
+      _filteredSubCategories = List.from(_allSubCategories);
+    });
+  }
+
+  filterSubCategories(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredSubCategories = List.from(_allSubCategories);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredSubCategories = _allSubCategories.where((ele) {
+        return (ele.name ?? "").toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  //================== Brands ==================//
+  getAllBrands() async {
+    await _fetchList<Brand>("brands", (data) {
+      _allBrands = data;
+      _filteredBrands = List.from(_allBrands);
+    });
+  }
+
+  filterBrands() async {
+    await getAllBrands();
+  }
+
+  //================== Variant Types ==================//
+  getAllVariantType() async {
+    await _fetchList<VariantType>("variant-types", (data) {
+      _allVariantTypes = data;
+      _filteredVariantTypes = List.from(_allVariantTypes);
+    });
+  }
+
+  filterVariantTypes() async {
+    await getAllVariantType();
+  }
+
+  //================== Variants ==================//
+  getAllVariant() async {
+    await _fetchList<Variant>("variants", (data) {
+      _allVariants = data;
+      _filteredVariants = List.from(_allVariants);
+    });
+  }
+
+  filterVariants() async {
+    await getAllVariant();
+  }
+
+  //================== Products ==================//
+  getAllProduct() async {
+    await _fetchList<Product>("products", (data) {
+      _allProducts = data;
+      _filteredProducts = List.from(_allProducts);
+    });
+  }
+
+  filterProducts() async {
+    await getAllProduct();
+  }
+
+  //================== Coupons ==================//
+  getAllCoupons() async {
+    await _fetchList<Coupon>("coupons", (data) {
+      _allCoupons = data;
+      _filteredCoupons = List.from(_allCoupons);
+    });
+  }
+
+  filterCoupons() async {
+    await getAllCoupons();
+  }
+
+  //================== Posters ==================//
+  getAllPosters() async {
+    await _fetchList<Poster>("posters", (data) {
+      _allPosters = data;
+      _filteredPosters = List.from(_allPosters);
+    });
+  }
+
+  filterPosters() async {
+    await getAllPosters();
+  }
+
+  //================== Notifications ==================//
+  getAllNotifications() async {
+    await _fetchList<MyNotification>("notifications", (data) {
+      _allNotifications = data;
+      _filteredNotifications = List.from(_allNotifications);
+    });
+  }
+
+  filterNotifications() async {
+    await getAllNotifications();
+  }
+
+  //================== Orders ==================//
+  getAllOrders() async {
+    await _fetchList<Order>("orders", (data) {
+      _allOrders = data;
+      _filteredOrders = List.from(_allOrders);
+    });
+  }
+
+  filterOrders() async {
+    await getAllOrders();
+  }
+
+  //================== Utility Methods ==================//
+
+  Future<void> _fetchList<T>(String endpoint, Function(List<T>) onSuccess) async {
+    try {
+      Response response = await service.getItems(endpointUrl: endpoint);
+
+      if (response.isOk) {
+        ApiResponse<List<T>> apiResponse = ApiResponse<List<T>>.fromJson(
           response.body,
-          (json)=>(json as List).map((toElement)=>Category.fromJson(toElement)).toList()
-          );
-        if(apiResponse.success==true){
-          _allCategories = apiResponse.data ?? [];
-          _filteredCategories = List.from(_allCategories);
+          (json) => (json as List).map((item) => _fromJson<T>(item)).toList(),
+        );
+
+        if (apiResponse.success == true) {
+          onSuccess(apiResponse.data ?? []);
           notifyListeners();
-        }else{
-          SnackBarHelper.showErrorSnackBar('Failed to add category: ${apiResponse.message}');
+        } else {
+          SnackBarHelper.showErrorSnackBar('Failed to fetch $endpoint: ${apiResponse.message}');
         }
-      }else{
-    //     SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+      } else {
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
       }
-    }catch(e){
-    //   print(e);
-      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+    } catch (e) {
+      SnackBarHelper.showErrorSnackBar('Error Occurred: $e');
       rethrow;
     }
   }
 
-  //TODO: should complete getAllSubCategory
+  T _fromJson<T>(dynamic json) {
+    if (T == Category) return Category.fromJson(json) as T;
+    if (T == SubCategory) return SubCategory.fromJson(json) as T;
+    if (T == Brand) return Brand.fromJson(json) as T;
+    if (T == VariantType) return VariantType.fromJson(json) as T;
+    if (T == Variant) return Variant.fromJson(json) as T;
+    if (T == Product) return Product.fromJson(json) as T;
+    if (T == Coupon) return Coupon.fromJson(json) as T;
+    if (T == Poster) return Poster.fromJson(json) as T;
+    if (T == Order) return Order.fromJson(json) as T;
+    if (T == MyNotification) return MyNotification.fromJson(json) as T;
+    throw Exception("Unknown class for parsing: $T");
+  }
 
+  //================== Additional Calculations ==================//
 
-  //TODO: should complete filterSubCategories
+//   calculateOrdersWithStatus(String status) {
+//     return _allOrders.where((order) => order.status == status).length;
+//   }
 
+//   filterProductsByQuantity(int quantityThreshold) {
+//     _filteredProducts = _allProducts.where((product) => product.quantity <= quantityThreshold).toList();
+//     notifyListeners();
+//   }
 
-  //TODO: should complete getAllBrands
-
-
-  //TODO: should complete filterBrands
-
-
-  //TODO: should complete getAllVariantType
-
-
-  //TODO: should complete filterVariantTypes
-
-
-
-  //TODO: should complete getAllVariant
-
-
-  //TODO: should complete filterVariants
-
-
-  //TODO: should complete getAllProduct
-
-
-  //TODO: should complete filterProducts
-
-
-  //TODO: should complete getAllCoupons
-
-
-  //TODO: should complete filterCoupons
-
-
-  //TODO: should complete getAllPosters
-
-
-  //TODO: should complete filterPosters
-
-
-  //TODO: should complete getAllNotifications
-
-
-  //TODO: should complete filterNotifications
-
-
-  //TODO: should complete getAllOrders
-
-
-  //TODO: should complete filterOrders
-
-
-
-
-  //TODO: should complete calculateOrdersWithStatus
-
-
-  //TODO: should complete filterProductsByQuantity
-
-
-  //TODO: should complete calculateProductWithQuantity
-
-
+//   calculateProductWithQuantity(int quantityThreshold) {
+//     return _allProducts.where((product) => product.quantity <= quantityThreshold).length;
+//   }
 }

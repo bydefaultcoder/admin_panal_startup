@@ -42,6 +42,7 @@ class CategoryProvider extends ChangeNotifier {
         ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
         if(apiResponse.success==true){
           clearFields();
+          _dataProvider.getAllCategory();
           SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
           log("category added");
         }else{
@@ -57,10 +58,63 @@ class CategoryProvider extends ChangeNotifier {
     }
 
   }
+  
+  updateCategory() async {
+    try{
+      if(categoryForUpdate?.image ==null){
+        SnackBarHelper.showErrorSnackBar("Please choose Image");
+        return;
+      }
+      Map<String,dynamic> formDataMap = {
+        'name':categoryNameCtrl.text,
+        "image":categoryForUpdate?.image ?? "",
+      };
+      final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
+      final response = await service.updateItem(endpointUrl: "categories", itemData: form, itemId: categoryForUpdate?.sId ?? "");
 
-  //TODO: should complete updateCategory
+      if(response.isOk){
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if(apiResponse.success==true){
+          clearFields();
+          _dataProvider.getAllCategory();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("category Updated");
 
-  //TODO: should complete submitCategory
+        }
+      return;
+      }
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+    }catch(e){
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+  }
+
+  deleteCategory(Category categ) async{
+     try{
+
+      final response = await service.deleteItem(endpointUrl: "categories", itemId: categ.sId ?? "");
+
+      if(response.isOk){
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if(apiResponse.success==true){
+          clearFields();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("category deleted");
+          _dataProvider.getAllCategory();
+        }
+      return;
+      }
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+    }catch(e){
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+  }
+
+  //submitCategory
 
 
   void pickImage() async {
@@ -73,9 +127,9 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
-  //TODO: should complete deleteCategory
 
-  //TODO: should complete setDataForUpdateCategory
+
+  //not setDataForUpdateCategory
 
 
   //? to create form data for sending image with body
