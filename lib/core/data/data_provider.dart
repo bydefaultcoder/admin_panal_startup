@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:get/get_connect.dart';
+import 'package:admin/models/api_response.dart';
 import '../../models/coupon.dart';
 import '../../models/my_notification.dart';
 import '../../models/order.dart';
@@ -11,7 +15,9 @@ import '../../../models/category.dart';
 import '../../models/brand.dart';
 import '../../models/sub_category.dart';
 import '../../models/variant.dart';
-
+import '../../../models/category.dart';
+import 'package:admin/models/api_response.dart';
+import 'package:admin/utility/snack_bar_helper.dart';
 class DataProvider extends ChangeNotifier {
   HttpService service = HttpService();
 
@@ -59,10 +65,59 @@ class DataProvider extends ChangeNotifier {
   DataProvider() {}
 
 
-  //TODO: should complete getAllCategory
+    getAllCategory() async {
+      try{
+      Response response = await service.getItems(endpointUrl: "categories");
+
+      if(response.isOk){
+        ApiResponse<List<Category>> apiResponse = ApiResponse<List<Category>>.fromJson(
+          response.body,
+          (json)=>(json as List).map((toElement)=>Category.fromJson(toElement)).toList()
+          );
+        if(apiResponse.success==true){
+          _allCategories = apiResponse.data ?? [];
+          _filteredCategories = List.from(_allCategories);
+          notifyListeners();
+        }else{
+          SnackBarHelper.showErrorSnackBar('Failed to add category: ${apiResponse.message}');
+        }
+      }else{
+    //     SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+      }
+    }catch(e){
+    //   print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+
+  }
 
 
-  //TODO: should complete filterCategories
+      filterCategories() async {
+      try{
+      Response response = await service.getItems(endpointUrl: "categories");
+
+      if(response.isOk){
+        ApiResponse<List<Category>> apiResponse = ApiResponse<List<Category>>.fromJson(
+          response.body,
+          (json)=>(json as List).map((toElement)=>Category.fromJson(toElement)).toList()
+          );
+        if(apiResponse.success==true){
+          _allCategories = apiResponse.data ?? [];
+          _filteredCategories = List.from(_allCategories);
+          notifyListeners();
+        }else{
+          SnackBarHelper.showErrorSnackBar('Failed to add category: ${apiResponse.message}');
+        }
+      }else{
+    //     SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+      }
+    }catch(e){
+    //   print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+  }
 
   //TODO: should complete getAllSubCategory
 

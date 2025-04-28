@@ -33,7 +33,7 @@ class CategoryProvider extends ChangeNotifier {
       }
       Map<String,dynamic> formDataMap = {
         'name':categoryNameCtrl.text,
-        "image":'no_data'
+        "img":'no_data'
       };
       final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
       final response = await service.addItem(endpointUrl: "categories", itemData: form);

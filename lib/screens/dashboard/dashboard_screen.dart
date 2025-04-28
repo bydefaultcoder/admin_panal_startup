@@ -1,3 +1,5 @@
+import 'package:admin/utility/extensions.dart';
+
 import 'components/dash_board_header.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -48,6 +50,7 @@ class DashboardScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     // TODO: Call getAllProduct
+                    
                   },
                   icon: Icon(Icons.refresh),
                 ),
