@@ -9,7 +9,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.dataProvider;
-    return Consumer<MainScreenProvider>(builder: (context, provider, child) {
+    return Consumer<MainScreenProvider>(builder: (context, provider, child) {  //MainScreenProvider instance to => provider
       return Scaffold(
         appBar: AppBar(
           actions: [ ProfileCard()],
