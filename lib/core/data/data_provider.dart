@@ -62,6 +62,7 @@ class DataProvider extends ChangeNotifier {
 
   DataProvider(){
     getAllCategory();
+    getAllSubCategory();
   }
 
   //================== Categories ==================//
@@ -86,7 +87,7 @@ class DataProvider extends ChangeNotifier {
 
   //================== SubCategories ==================//
   getAllSubCategory() async {
-    await _fetchList<SubCategory>("sub-categories", (data) {
+    await _fetchList<SubCategory>("subCategories", (data) {
       _allSubCategories = data;
       _filteredSubCategories = List.from(_allSubCategories);
     });

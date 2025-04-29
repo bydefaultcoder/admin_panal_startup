@@ -1,9 +1,13 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../core/data/data_provider.dart';
 import '../../../models/category.dart';
 import '../../../models/sub_category.dart';
 import '../../../services/http_services.dart';
+
+import 'package:admin/models/api_response.dart';
+import 'package:admin/utility/snack_bar_helper.dart';
 
 
 class SubCategoryProvider extends ChangeNotifier {
@@ -21,102 +25,113 @@ class SubCategoryProvider extends ChangeNotifier {
   SubCategoryProvider(this._dataProvider);
 
 
-  // addSubCategory() async {
-  //   try{
+  void submitSubCategory(){
+    if(subCategoryForUpdate==null){
+       addSubCategory();
+    }else{
+       subCategoryForUpdate;
+       updateCategory();
+    }
 
-  //     Map<String,dynamic> formDataMap = {
-  //       'name':subCategoryNameCtrl.text,
-  //       "img":
-  //     };
+  }
+
+
+  addSubCategory() async {
+    try{
+
+      Map<String,dynamic> subCategory = {
+        'name':subCategoryNameCtrl.text,
+        "categoryId":selectedCategory?.sId
+      };
   //     final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
-  //     final response = await service.addItem(endpointUrl: "categories", itemData: form);
+      final response = await service.addItem(endpointUrl: "subCategories", itemData: subCategory);
 
-  //     if(response.isOk){
-  //       ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
-  //       if(apiResponse.success==true){
-  //         clearFields();
-  //         _dataProvider.getAllCategory();
-  //         SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-  //         log("category added");
-  //       }else{
-  //         SnackBarHelper.showErrorSnackBar('Failed to add category: ${apiResponse.message}');
-  //       }
-  //     }else{
-  //       SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
-  //     }
-  //   }catch(e){
-  //     print(e);
-  //     SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-  //     rethrow;
-  //   }
+      if(response.isOk){
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if(apiResponse.success==true){
+          clearFields();
+          _dataProvider.getAllCategory();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("subCategory added");
+        }else{
+          SnackBarHelper.showErrorSnackBar('Failed to add Subcategory: ${apiResponse.message}');
+        }
+      }else{
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+      }
+    }catch(e){
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
 
-  // }
+  }
   
-  // updateCategory() async {
-  //   try{
-  //     if(categoryForUpdate?.image ==null){
-  //       SnackBarHelper.showErrorSnackBar("Please choose Image");
-  //       return;
-  //     }
-  //     Map<String,dynamic> formDataMap = {
-  //       'name':categoryNameCtrl.text,
-  //       "image":categoryForUpdate?.image ?? "",
-  //     };
-  //     final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
-  //     final response = await service.updateItem(endpointUrl: "categories", itemData: form, itemId: categoryForUpdate?.sId ?? "");
+  updateCategory() async {
+    try{
+      if(subCategoryForUpdate?.categoryId ==null || subCategoryForUpdate?.name ==null ){
+        SnackBarHelper.showErrorSnackBar("Please fill all fields.");
+        return;
+      }
+      Map<String,dynamic> subCategory = {
+        'name': subCategoryNameCtrl.text,
+        "categoryId":selectedCategory?.sId ?? "",
+      };
+      // final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
+      final response = await service.updateItem(endpointUrl: "subCategories", itemData: subCategory, itemId: subCategoryForUpdate?.sId ?? "");
 
-  //     if(response.isOk){
-  //       ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
-  //       if(apiResponse.success==true){
-  //         clearFields();
-  //         _dataProvider.getAllCategory();
-  //         SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-  //         log("category Updated");
+      if(response.isOk){
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if(apiResponse.success==true){
+          clearFields();
+          _dataProvider.getAllCategory();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("category Updated");
 
-  //       }
-  //     return;
-  //     }
-  //       SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
-  //   }catch(e){
-  //     print(e);
-  //     SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-  //     rethrow;
-  //   }
-  // }
+        }
+      return;
+      }
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+    }catch(e){
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+  }
+  
+  
+  void deleteSubCategory(SubCategory subcateg) async{
+     try{
 
-  // deleteCategory(Category categ) async{
-  //    try{
+      final response = await service.deleteItem(endpointUrl: "subCategories", itemId: subcateg.sId ?? "");
 
-  //     final response = await service.deleteItem(endpointUrl: "categories", itemId: categ.sId ?? "");
-
-  //     if(response.isOk){
-  //       ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
-  //       if(apiResponse.success==true){
-  //         clearFields();
-  //         SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-  //         log("category deleted");
-  //         _dataProvider.getAllCategory();
-  //       }
-  //     return;
-  //     }
-  //       SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
-  //   }catch(e){
-  //     print(e);
-  //     SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-  //     rethrow;
-  //   }
-  // }
+      if(response.isOk){
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if(apiResponse.success==true){
+          clearFields();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("SubCategory deleted");
+          _dataProvider.getAllSubCategory();
+        }
+      return;
+      }
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+    }catch(e){
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+  }
 
 
 
-  // //TODO: should complete submitSubCategory
 
 
   setDataForUpdateCategory(SubCategory? subCategory) {
     if (subCategory != null) {
       subCategoryForUpdate = subCategory;
-      subCategoryNameCtrl.text = subCategory.name ?? '';
-      selectedCategory = _dataProvider.categories.firstWhereOrNull((element) => element.sId == subCategory.categoryId?.sId);
+      subCategoryNameCtrl.text = subCategory.name;
+      selectedCategory = _dataProvider.categories.firstWhereOrNull((element) => element.sId == subCategory.categoryId.sId);
     } else {
       clearFields();
     }
@@ -131,4 +146,5 @@ class SubCategoryProvider extends ChangeNotifier {
   updateUi(){
     notifyListeners();
   }
+
 }

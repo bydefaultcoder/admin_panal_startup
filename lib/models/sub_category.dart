@@ -1,19 +1,19 @@
 class SubCategory {
   String? sId;
-  String? name;
-  CategoryId? categoryId;
+  late String name;
+  late CategoryId categoryId;
   String? createdAt;
   String? updatedAt;
 
   SubCategory(
-      {this.sId, this.name, this.categoryId, this.createdAt, this.updatedAt});
+      {this.sId, required this.name, required this.categoryId, this.createdAt, this.updatedAt});
 
   SubCategory.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
-    categoryId = json['categoryId'] != null
+    categoryId = (json['categoryId'] != null
         ? new CategoryId.fromJson(json['categoryId'])
-        : null;
+        : null)!;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -22,10 +22,8 @@ class SubCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['name'] = this.name;
-    if (this.categoryId != null) {
-      data['categoryId'] = this.categoryId!.toJson();
-    }
-    data['createdAt'] = this.createdAt;
+    data['categoryId'] = this.categoryId.toJson();
+      data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;
   }
