@@ -119,7 +119,7 @@ class DataProvider extends ChangeNotifier {
 
   //================== Variant Types ==================//
   getAllVariantType() async {
-    await _fetchList<VariantType>("variant-types", (data) {
+    await _fetchList<VariantType>("variantTypes", (data) {
       _allVariantTypes = data;
       _filteredVariantTypes = List.from(_allVariantTypes);
     });
