@@ -11,17 +11,17 @@ class VariantsTypeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          "Variants Type",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        Spacer(flex: 2),
+        // Text(
+        //   "Variants Type",
+        //   style: Theme.of(context).textTheme.titleLarge,
+        // ),
+        // Spacer(flex: 2),
         Expanded(child: SearchField(
           onChange: (val) {
             //TODO: should complete  call filterVariantTypes
           },
         )),
-        ProfileCard()
+        // ProfileCard()
       ],
     );
   }
