@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../core/data/data_provider.dart';
@@ -6,6 +5,7 @@ import '../../../models/category.dart';
 import '../../../models/sub_category.dart';
 import '../../../services/http_services.dart';
 
+import 'dart:developer';
 import 'package:admin/models/api_response.dart';
 import 'package:admin/utility/snack_bar_helper.dart';
 
@@ -29,7 +29,6 @@ class SubCategoryProvider extends ChangeNotifier {
     if(subCategoryForUpdate==null){
        addSubCategory();
     }else{
-       subCategoryForUpdate;
        updateCategory();
     }
 
