@@ -63,6 +63,9 @@ class DataProvider extends ChangeNotifier {
   DataProvider(){
     getAllCategory();
     getAllSubCategory();
+    getAllBrands();
+    getAllVariant();
+    getAllVariantType();
   }
 
   //================== Categories ==================//
