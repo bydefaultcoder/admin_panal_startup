@@ -114,7 +114,7 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
-  //submitCategory
+  
 
 
   void pickImage() async {

@@ -123,10 +123,6 @@ class SubCategoryProvider extends ChangeNotifier {
     }
   }
 
-
-
-
-
   setDataForUpdateCategory(SubCategory? subCategory) {
     if (subCategory != null) {
       subCategoryForUpdate = subCategory;

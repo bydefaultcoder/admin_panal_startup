@@ -99,7 +99,7 @@ class DataProvider extends ChangeNotifier {
     }else{
        final lowerKeyword = keyword.toLowerCase();
       _filteredSubCategories = _allSubCategories.where((ele) {
-        return (ele.name ?? "").toLowerCase().contains(lowerKeyword);
+        return (ele.name).toLowerCase().contains(lowerKeyword);
       }).toList();
     }
     notifyListeners();
