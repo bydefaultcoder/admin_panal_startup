@@ -5,6 +5,7 @@ import '../../../models/product_summery_info.dart';
 import '../../../utility/constants.dart';
 import 'product_summery_card.dart';
 
+
 class ProductSummerySection extends StatelessWidget {
   const ProductSummerySection({Key? key}) : super(key: key);
 
