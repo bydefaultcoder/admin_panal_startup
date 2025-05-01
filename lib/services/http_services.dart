@@ -4,9 +4,19 @@ import 'package:get/get.dart';
 import '../utility/constants.dart';
 
 class HttpService  {
-  final String baseUrl = MAIN_URL;
+  late String baseUrl ;
+
+  HttpService(){
+    if(LOCAL){
+       baseUrl= LOCAL_URL;
+    }else{
+       baseUrl= SER_URL;
+    }
+  }
+
 
   Future<Response> getItems({required String endpointUrl}) async {
+
     try {
       return await GetConnect().get('$baseUrl/$endpointUrl');
     } catch (e) {
