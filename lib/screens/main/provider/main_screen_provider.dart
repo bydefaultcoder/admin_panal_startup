@@ -6,6 +6,7 @@ import '../../notification/notification_screen.dart';
 import '../../order/order_screen.dart';
 import '../../posters/poster_screen.dart';
 import '../../variants/variants_screen.dart';
+import '../../units/unit_screen.dart';
 import '../../variants_type/variants_type_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,10 @@ class MainScreenProvider extends ChangeNotifier{
       case 'Notifications':
         HeaderText = "Notifications";
         selectedScreen = NotificationScreen();
+        break;
+      case 'Units':
+        HeaderText = "Units";
+        selectedScreen = UnitScreen();
         break;
       default:
         selectedScreen = DashboardScreen();

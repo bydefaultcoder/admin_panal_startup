@@ -7,6 +7,7 @@ import '../../models/my_notification.dart';
 import '../../models/order.dart';
 import '../../models/poster.dart';
 import '../../models/product.dart';
+import '../../models/unit.dart';
 import '../../models/variant_type.dart';
 import '../../services/http_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,6 +57,10 @@ class DataProvider extends ChangeNotifier {
   List<Order> _filteredOrders = [];
   List<Order> get orders => _filteredOrders;
 
+  List<Unit> _allUnits = [];
+  List<Unit> _filteredUnits = [];
+  List<Unit> get units => _filteredUnits;
+
   List<MyNotification> _allNotifications = [];
   List<MyNotification> _filteredNotifications = [];
   List<MyNotification> get notifications => _filteredNotifications;
@@ -68,6 +73,25 @@ class DataProvider extends ChangeNotifier {
     getAllVariantType();
   }
 
+  //================== Categories ==================//
+  getAllUnits() async {
+    await _fetchList<Unit>("units", (data) {
+      _allUnits = data;
+      _filteredUnits = List.from(_allUnits);
+    });
+  }
+
+  filterUnits(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredUnits = List.from(_allUnits);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredUnits = _allUnits.where((ele) {
+        return ele.name.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
   //================== Categories ==================//
   getAllCategory() async {
     await _fetchList<Category>("categories", (data) {
@@ -116,8 +140,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterBrands() async {
-    await getAllBrands();
+  filterBrands(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredBrands = List.from(_allBrands);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Variant Types ==================//
@@ -128,8 +160,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterVariantTypes() async {
-    await getAllVariantType();
+  filterVariantTypes(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredVariants = List.from(_allVariants);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredVariants = _allVariants.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Variants ==================//
@@ -140,8 +180,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterVariants() async {
-    await getAllVariant();
+  filterVariants(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredVariants = List.from(_allVariants);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredVariants = _allVariants.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Products ==================//
@@ -152,8 +200,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterProducts() async {
-    await getAllProduct();
+  filterProducts(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredProducts = List.from(_allProducts);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredProducts = _allProducts.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Coupons ==================//
@@ -164,9 +220,17 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterCoupons() async {
-    await getAllCoupons();
-  }
+  // filterCoupons(String keyword) async {
+  //   if(keyword.isEmpty){
+  //     _filteredCoupons = List.from(_allCoupons);
+  //   }else{
+  //      final lowerKeyword = keyword.toLowerCase();
+  //     _filteredCoupons = _allCoupons.where((ele) {
+  //       return (ele.name)!.toLowerCase().contains(lowerKeyword);
+  //     }).toList();
+  //   }
+  //   notifyListeners();
+  // }
 
   //================== Posters ==================//
   getAllPosters() async {
@@ -176,8 +240,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterPosters() async {
-    await getAllPosters();
+  filterPosters(String keyword) async {
+     if(keyword.isEmpty){
+      _filteredBrands = List.from(_allBrands);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Notifications ==================//
@@ -188,8 +260,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterNotifications() async {
-    await getAllNotifications();
+  filterNotifications(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredBrands = List.from(_allBrands);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Orders ==================//
@@ -200,8 +280,16 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  filterOrders() async {
-    await getAllOrders();
+  filterOrders(String keyword) async {
+    if(keyword.isEmpty){
+      _filteredBrands = List.from(_allBrands);
+    }else{
+       final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((ele) {
+        return (ele.name)!.toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   //================== Utility Methods ==================//
@@ -213,7 +301,10 @@ class DataProvider extends ChangeNotifier {
       if (response.isOk) {
         ApiResponse<List<T>> apiResponse = ApiResponse<List<T>>.fromJson(
           response.body,
-          (json) => (json as List).map((item) => _fromJson<T>(item)).toList(),
+          (json) => 
+          (json as List).
+          map((item) =>
+           _fromJson<T>(item)).toList(),
         );
 
         if (apiResponse.success == true) {
@@ -233,6 +324,7 @@ class DataProvider extends ChangeNotifier {
 
   T _fromJson<T>(dynamic json) {
     if (T == Category) return Category.fromJson(json) as T;
+    if (T == Unit) return Unit.fromJson(json) as T;
     if (T == SubCategory) return SubCategory.fromJson(json) as T;
     if (T == Brand) return Brand.fromJson(json) as T;
     if (T == VariantType) return VariantType.fromJson(json) as T;

@@ -46,7 +46,7 @@ class DashBoardProvider extends ChangeNotifier {
 
 
 
-  addVariant() async {
+  addProduct() async {
     try {
       if(mainImgXFile==null){
         SnackBarHelper.showErrorSnackBar("Please choose Image");
@@ -59,11 +59,11 @@ class DashBoardProvider extends ChangeNotifier {
          "quantity": productOffPriceCtrl.text, 
          "price":productPriceCtrl.text, 
          "offerPrice":productPriceCtrl.text.isEmpty ? productPriceCtrl.text:productPriceCtrl.text, 
-         "proCategoryId":selectedCategory, 
-         "proSubCategoryId":selectedSubCategory, 
-         "proBrandId":selectedBrand, 
-         "proVariantTypeId":selectedVariantType, 
-         "proVariantId":selectedVariants 
+         "proCategoryId":selectedCategory?.sId, 
+         "proSubCategoryId":selectedSubCategory?.sId, 
+         "proBrandId":selectedBrand?.sId, 
+         "proVariantTypeId":selectedVariantType?.sId, 
+         "proVariantId":selectedVariants
          };
          
 
@@ -81,6 +81,7 @@ class DashBoardProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           clearFields();
           _dataProvider.getAllProduct();
+          updateUI();
           SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
           log("Product added");
         } else {
@@ -98,72 +99,99 @@ class DashBoardProvider extends ChangeNotifier {
     }
   }
 
-  void submitSubCategory() {
+  void submitProduct() {
     if ( productForUpdate== null) {
-      addVariant();
+      addProduct();
     } else {
-      // updateVariant();
+      updateProduct();
     }
   }
-  // updateVariant() async {
-  //   try {
-  //     if (productForUpdate?. == null ||
-  //         productForUpdate?.name == null) {
-  //       SnackBarHelper.showErrorSnackBar("Please fill all fields.");
-  //       return;
-  //     }
-  //     Map<String, dynamic> subCategory = {
-  //       'name': variantCtrl.text,
-  //       "variantTypeId": selectedVariantType?.sId ?? "",
-  //     };
-  //     // final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
-  //     final response = await service.updateItem(
-  //         endpointUrl: "variants",
-  //         itemData: subCategory,
-  //         itemId: productForUpdate?.sId ?? "");
+updateProduct() async {
+  try {
+    print(productForUpdate?.images?.length);
+    if (mainImgXFile == null && (productForUpdate?.images?.length??0) < 1 ) {
+      SnackBarHelper.showErrorSnackBar("Please choose an image.");
+      return;
+    }
 
-  //     if (response.isOk) {
-  //       ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
-  //       if (apiResponse.success == true) {
-  //         clearFields();
-  //         _dataProvider.getAllCategory();
-  //         SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-  //         log("variant Updated");
-  //       }
-  //       return;
-  //     }
-  //     SnackBarHelper.showErrorSnackBar(
-  //         'Error ${response.body['message'] ?? response.statusText}');
-  //   } catch (e) {
-  //     print(e);
-  //     SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-  //     rethrow;
-  //   }
-  // }
+    Map<String, dynamic> formDataMap = {
+      "name": productNameCtrl.text,
+      "description": productDescCtrl.text,
+      "quantity": productOffPriceCtrl.text,
+      "price": productPriceCtrl.text,
+      "offerPrice": productPriceCtrl.text.isEmpty
+          ? productPriceCtrl.text
+          : productPriceCtrl.text,
+      "proCategoryId": selectedCategory?.sId,
+      "proSubCategoryId": selectedSubCategory?.sId,
+      "proBrandId": selectedBrand?.sId,
+      "proVariantTypeId": selectedVariantType?.sId,
+      "proVariantId": selectedVariants
+    };
 
-  // void deleteVariant(Variant variant) async {
-  //   try {
-  //     final response = await service.deleteItem(
-  //         endpointUrl: "variants", itemId: variant.sId ?? "");
+    final FormData form = await createFormDataForMultipleImage(
+      imgXFiles: [
+        {"image1": this.mainImgXFile},
+        {"image2": this.secondImgXFile},
+        {"image3": this.thirdImgXFile},
+        {"image4": this.fourthImgXFile},
+        {"image5": this.fifthImgXFile},
+      ],
+      formData: formDataMap,
+    );
 
-  //     if (response.isOk) {
-  //       ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
-  //       if (apiResponse.success == true) {
-  //         clearFields();
-  //         SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-  //         log("Variant deleted");
-  //         _dataProvider.getAllBrands();
-  //       }
-  //       return;
-  //     }
-  //     SnackBarHelper.showErrorSnackBar(
-  //         'Error ${response.body['message'] ?? response.statusText}');
-  //   } catch (e) {
-  //     print(e);
-  //     SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-  //     rethrow;
-  //   }
-  // }
+    final response = await service.updateItem(
+      endpointUrl: "products",
+      itemData: form,
+      itemId: productForUpdate?.sId ?? "",
+    );
+
+    if (response.isOk) {
+      ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+      if (apiResponse.success == true) {
+        clearFields();
+        _dataProvider.getAllProduct();
+        updateUI();
+        SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+        log("Product updated");
+      } else {
+        SnackBarHelper.showErrorSnackBar(
+            'Failed to update Product: ${apiResponse.message}');
+      }
+    } else {
+      SnackBarHelper.showErrorSnackBar(
+          'Error ${response.body['message'] ?? response.statusText}');
+    }
+  } catch (e) {
+    print(e);
+    SnackBarHelper.showErrorSnackBar('Error Occurred: $e');
+    rethrow;
+  }
+}
+  void deleteProduct(Product product) async {
+    try {
+      final response = await service.deleteItem(
+          endpointUrl: "products", itemId: product.sId ?? "");
+
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          // clearFields();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("Products deleted");
+          _dataProvider.getAllProduct();
+          updateUI();
+        }
+        return;
+      }
+      SnackBarHelper.showErrorSnackBar(
+          'Error ${response.body['message'] ?? response.statusText}');
+    } catch (e) {
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
+  }
 
 
 

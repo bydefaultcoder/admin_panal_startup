@@ -21,6 +21,7 @@ class ProductListSection extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(defaultPadding),
+      // height: 10,
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -42,7 +43,7 @@ class ProductListSection extends StatelessWidget {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: defaultPadding,
                   mainAxisSpacing: defaultPadding,
-                  childAspectRatio: 3 / 2,
+                  // childAspectRatio: 5 / 4,
                 ),
                 itemCount: dataProvider.products.length,
                 itemBuilder: (context, index) {
@@ -82,6 +83,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
+      
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -90,7 +92,7 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+                        Row(
               children: [
                 Image.network(
                   product.images?.first.url ?? '',
@@ -133,3 +135,6 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
+
+
+          

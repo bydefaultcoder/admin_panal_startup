@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:admin/core/data/data_provider.dart';
 import 'package:admin/models/api_response.dart';
 import 'package:admin/utility/snack_bar_helper.dart';
 
@@ -16,13 +17,14 @@ class UnitProvider extends ChangeNotifier {
   final addUnitFormKey = GlobalKey<FormState>();
   TextEditingController unitNameCtrl = TextEditingController();
   Unit? unitForUpdate;
+  DataProvider _dataProvider;
 
 
   File? selectedImage;
   XFile? imgXFile;
 
 
-  UnitProvider();
+  UnitProvider(this._dataProvider);
       // {required this.name,
       // required this.intoBase,
       // this.baseUnit,
@@ -31,7 +33,7 @@ class UnitProvider extends ChangeNotifier {
       // this.isActive,
       // this.description,}
   addUnit() async {
-    // try{
+    try{
 
       Map<String,dynamic> formDataMap = {
         'name':unitNameCtrl.text,
@@ -42,27 +44,26 @@ class UnitProvider extends ChangeNotifier {
         "description":'no_data',
       };
     //   final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
-    //   final response = await service.addItem(endpointUrl: "categories", itemData: form);
+      final response = await service.addItem(endpointUrl: "units", itemData: formDataMap);
 
-    //   if(response.isOk){
-    //     ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
-    //     if(apiResponse.success==true){
-    //       clearFields();
-    //       _dataProvider.getAllCategory();
-    //       SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-    //       log("category added");
-    //     }else{
-    //       SnackBarHelper.showErrorSnackBar('Failed to add category: ${apiResponse.message}');
-    //     }
-    //   }else{
-    //     SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
-    //   }
-    // }catch(e){
-    //   print(e);
-    //   SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
-    //   rethrow;
-    // }
-
+      if(response.isOk){
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if(apiResponse.success==true){
+          clearFields();
+          _dataProvider.getAllUnits();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          log("unit added");
+        }else{
+          SnackBarHelper.showErrorSnackBar('Failed to add unit: ${apiResponse.message}');
+        }
+      }else{
+        SnackBarHelper.showErrorSnackBar('Error ${response.body['message'] ?? response.statusText}');
+      }
+    }catch(e){
+      print(e);
+      SnackBarHelper.showErrorSnackBar('Error Occurred : $e');
+      rethrow;
+    }
   }
   
   updateUnit() async {

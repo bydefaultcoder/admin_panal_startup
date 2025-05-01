@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utility/constants.dart';
 
-class CategoryHeader extends StatelessWidget {
-  const CategoryHeader({
+class UnitHeader extends StatelessWidget {
+  const UnitHeader({
     Key? key,
   }) : super(key: key);
 
@@ -14,7 +14,7 @@ class CategoryHeader extends StatelessWidget {
       children: [
         Expanded(child: SearchField(
           onChange: (val) {
-            context.dataProvider.filterCategories(val);
+            context.dataProvider.filterUnits(val);
           },
         )),
       ],
