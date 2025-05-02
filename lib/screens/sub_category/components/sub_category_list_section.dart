@@ -99,7 +99,7 @@ DataRow subCategoryDataRow(SubCategory subCatInfo, int index, {Function? edit, F
           ],
         ),
       ),
-      DataCell(Text(subCatInfo.categoryId?.name ?? '')),
+      DataCell(Text(subCatInfo.categoryId.name ?? '')),
       DataCell(Text(subCatInfo.createdAt ?? '')),
       DataCell(IconButton(
           onPressed: () {

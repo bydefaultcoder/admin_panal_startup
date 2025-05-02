@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 import '../../sub_category/sub_category_screen.dart';
 
 class MainScreenProvider extends ChangeNotifier{
-  Widget selectedScreen = DashboardScreen();
-  String HeaderText = "Dashboard";
+  late Widget selectedScreen = DashboardScreen();
+  late String HeaderText = "Dashboard";
 
   navigateToScreen(String screenName) {
     switch (screenName) {

@@ -252,7 +252,7 @@ updateProduct() async {
   filterSubcategory(Category category){
     selectedSubCategory=null;
     selectedBrand=null;
-    selectedCategory=category;
+    selectedCategory=category; 
     subCategoriesByCategory.clear();
     final newList = _dataProvider.subCategories.where((subCat)=>subCat.categoryId.sId==category.sId).toList();
     subCategoriesByCategory = newList;

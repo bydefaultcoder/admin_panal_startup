@@ -15,33 +15,45 @@ import '../../../models/unit.dart';
 class UnitProvider extends ChangeNotifier {
   HttpService service = HttpService();
   final addUnitFormKey = GlobalKey<FormState>();
-  TextEditingController unitNameCtrl = TextEditingController();
-  Unit? unitForUpdate;
-  DataProvider _dataProvider;
+  TextEditingController unitNameCtrl = TextEditingController(); //name
+  TextEditingController unitIntoBaseCtrl = TextEditingController(); //number
+  TextEditingController unitSymbolCtrl = TextEditingController(); //string
+  TextEditingController descriptionCtrl = TextEditingController(); //string
+  Unit? unitForUpdate;                                            //Object
+  DataProvider _dataProvider;                                     
+  String? selectedTypeOFUnit;                                    //string
+  Unit? selectedBaseUnit;                                         //Object
+  String? isActive;
+  String? description;
+  List<Unit> unitsBaseByUnitType=[];
+  
 
 
   File? selectedImage;
   XFile? imgXFile;
+      // this.description,}
 
 
   UnitProvider(this._dataProvider);
-      // {required this.name,
-      // required this.intoBase,
-      // this.baseUnit,
-      // required this.type,
-      // required this.symbol,
-      // this.isActive,
-      // this.description,}
+
+  filterUnitByType(String uType){
+    selectedBaseUnit =null;
+    unitsBaseByUnitType.clear();
+    final newList = _dataProvider.units.where((u)=>u.type==uType).toList();
+    unitsBaseByUnitType = newList;
+    notifyListeners();
+  }
+
   addUnit() async {
     try{
 
       Map<String,dynamic> formDataMap = {
         'name':unitNameCtrl.text,
-        "intoBase":'no_data',
-        "baseUnit":'no_data',
-        "type":'no_data',
-        "symbol":'no_data',
-        "description":'no_data',
+        "into_base":unitIntoBaseCtrl.text,
+        "base_unit":selectedBaseUnit?.sId,
+        "type":selectedTypeOFUnit,
+        "symbol":unitSymbolCtrl.text,
+        "description":descriptionCtrl.text,
       };
     //   final FormData form = await createFormData(imgXFile: imgXFile, formData: formDataMap);
       final response = await service.addItem(endpointUrl: "units", itemData: formDataMap);
@@ -134,7 +146,9 @@ class UnitProvider extends ChangeNotifier {
     }
   }
 
-
+  updateUi(){
+    notifyListeners();
+  }
 
   //not setDataForUpdateCategory
 
@@ -162,7 +176,10 @@ class UnitProvider extends ChangeNotifier {
     if (unit != null) {
       clearFields();
       unitForUpdate = unit;
-      unitNameCtrl.text = unit.name ?? '';
+      unitNameCtrl.text = unit.name ;
+      unitIntoBaseCtrl.text = unit.intoBase ;
+      unitSymbolCtrl.text = unit.symbol??'' ;
+      descriptionCtrl.text = unit.description??"" ;
     } else {
       clearFields();
     }

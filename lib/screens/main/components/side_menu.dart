@@ -21,6 +21,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_dashboard.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Dashboard');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -28,6 +29,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_tran.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Category');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -35,6 +37,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('SubCategory');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -42,6 +45,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_doc.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Brands');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -49,6 +53,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_store.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('VariantType');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -56,6 +61,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_notification.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Variants');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -63,6 +69,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/unit.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Units');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -70,6 +77,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_profile.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Order');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -77,6 +85,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_setting.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Coupon');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -84,6 +93,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_doc.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Poster');
+               Navigator.pop(context);
             },
           ),
           DrawerListTile(
@@ -91,6 +101,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_notification.svg",
             press: () {
               context.mainScreenProvider.navigateToScreen('Notifications');
+               Navigator.pop(context);
             },
           ),
         ],

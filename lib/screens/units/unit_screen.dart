@@ -2,7 +2,7 @@ import 'package:admin/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
-import 'components/add_category_form.dart';
+import 'components/add_unit_form.dart';
 import 'components/unit_header.dart';
 import 'components/unit_list_section.dart';
 
@@ -41,7 +41,7 @@ class UnitScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              showAddCategoryForm(context, null);
+                              showAddUnitForm(context, null);
                             },
                             icon: Icon(Icons.add),
                             label: Text("Add New"),

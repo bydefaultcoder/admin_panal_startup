@@ -1,3 +1,4 @@
+import 'package:admin/screens/units/components/add_unit_form.dart';
 import 'package:admin/utility/extensions.dart';
 
 import '../../../core/data/data_provider.dart';
@@ -63,10 +64,10 @@ class UnitListSection extends StatelessWidget {
                     (index) => unitDataRow(dataProvider.units[index],
                         delete: () {
                           // context.categoryProvider
-                          // context.unitProvider.de(dataProvider.categories[index]);
+                          // context.unitProvider.(dataProvider.categories[index]);
                     }, edit: () {
-                      // showAddCategoryForm(
-                      //     context, dataProvider.categories[index]);
+                      showAddUnitForm(
+                          context, dataProvider.units[index]);
                     }),
                   ),
                 );

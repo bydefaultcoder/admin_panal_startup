@@ -1,7 +1,7 @@
 class Unit {
   String? sId;
   late String name;
-  int? intoBase;
+  dynamic intoBase;
   String? baseUnit;
   String? type;
   String? symbol;

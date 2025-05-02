@@ -65,7 +65,9 @@ class DataProvider extends ChangeNotifier {
   List<MyNotification> _filteredNotifications = [];
   List<MyNotification> get notifications => _filteredNotifications;
 
-  DataProvider(){
+  DataProvider() {
+    getAllProduct();
+    getAllUnits();
     getAllCategory();
     getAllSubCategory();
     getAllBrands();
