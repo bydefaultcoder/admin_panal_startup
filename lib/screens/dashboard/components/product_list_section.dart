@@ -53,6 +53,9 @@ class ProductListSection extends StatelessWidget {
                     onEdit: () {
                       showAddProductForm(context, product);
                     },
+                    manageProduct: () {
+                      // shoWmanageProductWindow
+                    },
                     onDelete: () {
                       // TODO: Delete function
                     },
@@ -70,12 +73,14 @@ class ProductListSection extends StatelessWidget {
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onEdit;
+  final VoidCallback manageProduct;
   final VoidCallback onDelete;
 
   const ProductCard({
     Key? key,
     required this.product,
     required this.onEdit,
+    required this.manageProduct,
     required this.onDelete,
   }) : super(key: key);
 
@@ -122,11 +127,19 @@ class ProductCard extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: onEdit,
+                  tooltip: "Manage Product",
+                  icon: Icon(Icons.precision_manufacturing_rounded , color: Color(0xFF47e228)),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: onEdit,
                   icon: Icon(Icons.edit, color: Colors.white),
+                  tooltip: "Edit",
                 ),
                 IconButton(
                   onPressed: onDelete,
                   icon: Icon(Icons.delete, color: Colors.red),
+                  tooltip: "Delete",
                 ),
               ],
             ),

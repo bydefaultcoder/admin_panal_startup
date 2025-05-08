@@ -10,57 +10,57 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
+        return Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
             child: Image.asset("assets/images/logo.png"),
-          ),
-          DrawerListTile(
-            title: "Dashboard",
-            svgSrc: "assets/icons/menu_dashboard.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Dashboard');
+              ),
+              DrawerListTile(
+                title: "Dashboard",
+                svgSrc: "assets/icons/menu_dashboard.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Dashboard');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Category",
-            svgSrc: "assets/icons/menu_tran.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Category');
+                },
+              ),
+              DrawerListTile(
+                title: "Category",
+                svgSrc: "assets/icons/menu_tran.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Category');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Sub Category",
-            svgSrc: "assets/icons/menu_task.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('SubCategory');
+                },
+              ),
+              DrawerListTile(
+                title: "Sub Category",
+                svgSrc: "assets/icons/menu_task.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('SubCategory');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Brands",
-            svgSrc: "assets/icons/menu_doc.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Brands');
+                },
+              ),
+              DrawerListTile(
+                title: "Brands",
+                svgSrc: "assets/icons/menu_doc.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Brands');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Variant Type",
-            svgSrc: "assets/icons/menu_store.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('VariantType');
+                },
+              ),
+              DrawerListTile(
+                title: "Variant Type",
+                svgSrc: "assets/icons/menu_store.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('VariantType');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Variants",
-            svgSrc: "assets/icons/menu_notification.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Variants');
+                },
+              ),
+              DrawerListTile(
+                title: "Variants",
+                svgSrc: "assets/icons/menu_notification.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Variants');
                Navigator.pop(context);
             },
           ),
@@ -70,42 +70,49 @@ class SideMenu extends StatelessWidget {
             press: () {
               context.mainScreenProvider.navigateToScreen('Units');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Orders",
-            svgSrc: "assets/icons/menu_profile.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Order');
+                },
+              ),
+              DrawerListTile(
+                title: "Orders",
+                svgSrc: "assets/icons/menu_profile.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Order');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Coupons",
-            svgSrc: "assets/icons/menu_setting.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Coupon');
+                },
+              ),
+              DrawerListTile(
+                title: "Coupons",
+                svgSrc: "assets/icons/menu_setting.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Coupon');
                Navigator.pop(context);
-            },
-          ),
-          DrawerListTile(
-            title: "Posters",
-            svgSrc: "assets/icons/menu_doc.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Poster');
+                },
+              ),
+              DrawerListTile(
+                title: "Posters",
+                svgSrc: "assets/icons/menu_doc.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Poster');
                Navigator.pop(context);
-            },
+                },
+              ),
+              DrawerListTile(
+                title: "Notifications",
+                svgSrc: "assets/icons/menu_notification.svg",
+                press: () {
+                  context.mainScreenProvider.navigateToScreen('Notifications');
+                  Navigator.pop(context);
+                },
+              ),
+              // DrawerListTile(
+              //   title: "Warehouse",
+              //   svgSrc: "assets/icons/menu_notificationr.svg",
+              //   press: () {
+              //     context.mainScreenProvider.navigateToScreen('Warehouse');
+              //     // if (isMobile) Navigator.pop(context);
+              //   },)
+            ],
           ),
-          DrawerListTile(
-            title: "Notifications",
-            svgSrc: "assets/icons/menu_notification.svg",
-            press: () {
-              context.mainScreenProvider.navigateToScreen('Notifications');
-               Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
     );
   }
 }

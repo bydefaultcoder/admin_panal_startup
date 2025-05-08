@@ -8,6 +8,7 @@ import '../../posters/poster_screen.dart';
 import '../../variants/variants_screen.dart';
 import '../../units/unit_screen.dart';
 import '../../variants_type/variants_type_screen.dart';
+import '../../warehouse/warehouse_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -61,6 +62,10 @@ class MainScreenProvider extends ChangeNotifier{
       case 'Units':
         HeaderText = "Units";
         selectedScreen = UnitScreen();
+        break;
+      case 'Warehouse':
+        HeaderText = "Warehouse";
+        selectedScreen = WarehouseScreen();
         break;
       default:
         selectedScreen = DashboardScreen();
