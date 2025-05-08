@@ -114,7 +114,8 @@ class ProductCard extends StatelessWidget {
             const SizedBox(height: defaultPadding / 2),
             Text("Category: ${product.proCategoryId?.name ?? '-'}"),
             Text("Subcategory: ${product.proSubCategoryId?.name ?? '-'}"),
-            Text("Price: ₹${product.price ?? 'N/A'}"),
+            Text("Price: ₹${product.sellingPrice ?? 'N/A'}"),
+            Text("Price: ₹${product.offerSellingPrice ?? 'N/A'}"),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

@@ -1,3 +1,5 @@
+import 'package:admin/models/unit.dart';
+
 import '../../../models/brand.dart';
 import '../../../models/category.dart';
 import '../../../models/product.dart';
@@ -35,7 +37,7 @@ class ProductSubmitForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: defaultPadding),
+              // SizedBox(height: defaultPadding),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -219,7 +221,7 @@ class ProductSubmitForm extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
-                      controller: context.dashBoardProvider.productPriceCtrl,
+                      controller: context.dashBoardProvider.productSPCtrl,
                       labelText: 'Price',
                       inputType: TextInputType.number,
                       onSave: (val) {},
@@ -233,26 +235,36 @@ class ProductSubmitForm extends StatelessWidget {
                   ),
                   Expanded(
                     child: CustomTextField(
-                      controller: context.dashBoardProvider.productOffPriceCtrl,
+                      controller: context.dashBoardProvider.productOSPCtrl,
                       labelText: 'Offer price',
                       inputType: TextInputType.number,
                       onSave: (val) {},
                     ),
                   ),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: context.dashBoardProvider.productQntCtrl,
-                      labelText: 'Quantity',
-                      inputType: TextInputType.number,
-                      onSave: (val) {},
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please enter quantity';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
+                  Expanded(child: Consumer<DashBoardProvider>(
+                    builder: (context, dashProvider, child) {
+                      return CustomDropdown(
+                        key: ValueKey(dashProvider.selectedUnit?.sId),
+                        hintText: dashProvider.selectedUnit?.name ?? 'Select Unit',
+                        items: context.dataProvider.units,
+                        initialValue: dashProvider.selectedUnit,
+                        displayItem: (Unit? unit) => unit?.name ?? '',
+                        onChanged: (newValue) {
+                          if (newValue != null) {
+                              dashProvider.selectedUnit = newValue;
+                              dashProvider.updateUI();
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select sub category';
+                          }
+                          return null;
+                        },
+                      );
+                    },
+                  )),
+                
                 ],
               ),
               SizedBox(width: defaultPadding),
@@ -279,12 +291,12 @@ class ProductSubmitForm extends StatelessWidget {
                   Expanded(
                     child: Consumer<DashBoardProvider>(
                       builder: (context, dashProvider, child) {
-                        final filteredSelectedItems =
+                        final filteredSelectedItems = 
                             dashProvider.selectedVariants.where((item) => dashProvider.variantsByVariantType.contains(item)).toList();
                         return MultiSelectDropDown(
                           items: dashProvider.variantsByVariantType,
                           onSelectionChanged: (newValue) {
-                            dashProvider.selectedVariants = newValue;
+                            dashProvider.selectedVariants.addAll(newValue);
                             dashProvider.updateUI();
                           },
                           displayItem: (String item) => item,

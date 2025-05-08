@@ -1,11 +1,11 @@
 class Product {
   String? sId;
-  String? name;
   String? description;
-  int? quantity;
-  double? price;
-  double? offerPrice;
+  double? sellingPrice;
+  double? offerSellingPrice;
   ProRef? proCategoryId;
+  String? name;
+  ProRef? unitId;
   ProRef? proSubCategoryId;
   ProRef? proBrandId;
   ProTypeRef? proVariantTypeId;
@@ -19,12 +19,12 @@ class Product {
       {this.sId,
         this.name,
         this.description,
-        this.quantity,
-        this.price,
-        this.offerPrice,
+        this.sellingPrice,
+        this.offerSellingPrice,
         this.proCategoryId,
         this.proSubCategoryId,
         this.proBrandId,
+        this.unitId,
         this.proVariantTypeId,
         this.proVariantId,
         this.images,
@@ -36,22 +36,25 @@ class Product {
     sId = json['_id'];
     name = json['name'];
     description = json['description'];
-    quantity = json['quantity'];
-    price = json['price']?.toDouble();;
-    offerPrice = json['offerPrice']?.toDouble();;
-    proCategoryId = json['proCategoryId'] != null
-        ? new ProRef.fromJson(json['proCategoryId'])
+    sellingPrice = json['sellingPrice']?.toDouble();
+    offerSellingPrice = json['offerSellingPrice']?.toDouble();
+    proCategoryId = json['category'] != null
+        ? new ProRef.fromJson(json['category'])
         : null;
-    proSubCategoryId = json['proSubCategoryId'] != null
-        ? new ProRef.fromJson(json['proSubCategoryId'])
+    proSubCategoryId = json['subCategory'] != null
+        ? new ProRef.fromJson(json['subCategory'])
         : null;
-    proBrandId = json['proBrandId'] != null
-        ? new ProRef.fromJson(json['proBrandId'])
+    proBrandId = json['brand'] != null
+        ? new ProRef.fromJson(json['brand'])
         : null;
-    proVariantTypeId = json['proVariantTypeId'] != null
-        ? new ProTypeRef.fromJson(json['proVariantTypeId'])
+    unitId = json['unit'] != null
+        ? new ProRef.fromJson(json['unit'])
         : null;
-    proVariantId = json['proVariantId'].cast<String>();
+    print(json['variantType']);
+    proVariantTypeId = json['variantType'] != null
+        ? new ProTypeRef.fromJson(json['variantType'])
+        : null;
+    proVariantId = json['variant'].cast<String>();
     if (json['images'] != null) {
       images = <Images>[];
       json['images'].forEach((v) {
@@ -63,27 +66,30 @@ class Product {
     iV = json['__v'];
   }
 
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['description'] = this.description;
-    data['quantity'] = this.quantity;
-    data['price'] = this.price;
-    data['offerPrice'] = this.offerPrice;
+    data['price'] = this.sellingPrice;
+    data['offerSellingPrice'] = this.offerSellingPrice;
     if (this.proCategoryId != null) {
-      data['proCategoryId'] = this.proCategoryId!.toJson();
-    }
-    if (this.proSubCategoryId != null) {
-      data['proSubCategoryId'] = this.proSubCategoryId!.toJson();
+      data['category'] = this.proCategoryId!.toJson();
     }
     if (this.proBrandId != null) {
-      data['proBrandId'] = this.proBrandId!.toJson();
+      data['brand'] = this.proBrandId!.toJson();
+    }
+    if (this.proSubCategoryId != null) {
+      data['subCategory'] = this.proSubCategoryId!.toJson();
+    }
+    if (this.unitId != null) {
+      data['unit'] = this.unitId!.toJson();
     }
     if (this.proVariantTypeId != null) {
-      data['proVariantTypeId'] = this.proVariantTypeId!.toJson();
+      data['variantType'] = this.proVariantTypeId!.toJson();
     }
-    data['proVariantId'] = this.proVariantId;
+    data['variant'] = this.proVariantId;
     if (this.images != null) {
       data['images'] = this.images!.map((v) => v.toJson()).toList();
     }

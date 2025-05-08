@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:admin/models/unit.dart';
+
 import '../../../models/brand.dart';
 import '../../../models/sub_category.dart';
 import '../../../models/variant_type.dart';
@@ -23,14 +25,14 @@ class DashBoardProvider extends ChangeNotifier {
   //?text editing controllers in dashBoard screen
   TextEditingController productNameCtrl = TextEditingController();
   TextEditingController productDescCtrl = TextEditingController();
-  TextEditingController productQntCtrl = TextEditingController();
-  TextEditingController productPriceCtrl = TextEditingController();
-  TextEditingController productOffPriceCtrl = TextEditingController();
+  TextEditingController productSPCtrl = TextEditingController(); //selling price
+  TextEditingController productOSPCtrl = TextEditingController(); //offer selling prize
 
   //? dropdown value
   Category? selectedCategory;
   SubCategory? selectedSubCategory;
   Brand? selectedBrand;
+  Unit? selectedUnit;
   VariantType? selectedVariantType;
   List<String> selectedVariants = [];
 
@@ -45,7 +47,6 @@ class DashBoardProvider extends ChangeNotifier {
   DashBoardProvider(this._dataProvider);
 
 
-
   addProduct() async {
     try {
       if(mainImgXFile==null){
@@ -56,16 +57,15 @@ class DashBoardProvider extends ChangeNotifier {
       Map<String, dynamic> formDataMap = {
          "name":productNameCtrl.text, 
          "description":productDescCtrl.text, 
-         "quantity": productOffPriceCtrl.text, 
-         "price":productPriceCtrl.text, 
-         "offerPrice":productPriceCtrl.text.isEmpty ? productPriceCtrl.text:productPriceCtrl.text, 
-         "proCategoryId":selectedCategory?.sId, 
-         "proSubCategoryId":selectedSubCategory?.sId, 
-         "proBrandId":selectedBrand?.sId, 
-         "proVariantTypeId":selectedVariantType?.sId, 
-         "proVariantId":selectedVariants
+         "sellingPrice":productSPCtrl.text, 
+         "offerSellingPrice":productOSPCtrl.text.isEmpty ? productOSPCtrl.text:productOSPCtrl.text, 
+         "unit":selectedUnit?.sId, 
+         "category":selectedCategory?.sId, 
+         "subCategory":selectedSubCategory?.sId, 
+         "brand":selectedBrand?.sId, 
+         "variantType":selectedVariantType?.sId, 
+         "variant":selectedVariants
          };
-         
 
       final FormData form = await createFormDataForMultipleImage(imgXFiles: [
         {"image1":this.mainImgXFile},
@@ -106,7 +106,7 @@ class DashBoardProvider extends ChangeNotifier {
       updateProduct();
     }
   }
-updateProduct() async {
+  updateProduct() async {
   try {
     print(productForUpdate?.images?.length);
     if (mainImgXFile == null && (productForUpdate?.images?.length??0) < 1 ) {
@@ -117,16 +117,16 @@ updateProduct() async {
     Map<String, dynamic> formDataMap = {
       "name": productNameCtrl.text,
       "description": productDescCtrl.text,
-      "quantity": productOffPriceCtrl.text,
-      "price": productPriceCtrl.text,
-      "offerPrice": productPriceCtrl.text.isEmpty
-          ? productPriceCtrl.text
-          : productPriceCtrl.text,
-      "proCategoryId": selectedCategory?.sId,
-      "proSubCategoryId": selectedSubCategory?.sId,
-      "proBrandId": selectedBrand?.sId,
-      "proVariantTypeId": selectedVariantType?.sId,
-      "proVariantId": selectedVariants
+      "sellingPrice": productSPCtrl.text,
+      "offerSellingPrice": productOSPCtrl.text.isEmpty
+          ? productOSPCtrl.text
+          : productOSPCtrl.text,
+      "unit": selectedUnit?.sId,
+      "category": selectedCategory?.sId,
+      "subCategory": selectedSubCategory?.sId,
+      "brand": selectedBrand?.sId,
+      "variantType": selectedVariantType?.sId,
+      "variant": selectedVariants
     };
 
     final FormData form = await createFormDataForMultipleImage(
@@ -269,7 +269,7 @@ updateProduct() async {
   }
 
   filterVariant(VariantType variantType){
-    selectedVariants= [];
+    // selectedVariants= [];
     selectedVariantType=variantType;
     variantsByVariantType.clear();
     final  newList = _dataProvider.variants.where(
@@ -287,11 +287,11 @@ updateProduct() async {
 
       productNameCtrl.text = product.name ?? '';
       productDescCtrl.text = product.description ?? '';
-      productPriceCtrl.text = product.price.toString();
-      productOffPriceCtrl.text = '${product.offerPrice}';
-      productQntCtrl.text = '${product.quantity}';
+      productSPCtrl.text = product.sellingPrice.toString();
+      productOSPCtrl.text = '${product.offerSellingPrice}';
 
       selectedCategory = _dataProvider.categories.firstWhereOrNull((element) => element.sId == product.proCategoryId?.sId);
+      selectedUnit = _dataProvider.units.firstWhereOrNull((element) => element.sId == product.unitId?.sId);
 
       final newListCategory = _dataProvider.subCategories
           .where((subcategory) => subcategory.categoryId.sId == product.proCategoryId?.sId)
@@ -322,9 +322,8 @@ updateProduct() async {
   clearFields() {
     productNameCtrl.clear();
     productDescCtrl.clear();
-    productPriceCtrl.clear();
-    productOffPriceCtrl.clear();
-    productQntCtrl.clear();
+    productSPCtrl.clear();
+    productOSPCtrl.clear();
 
     selectedMainImage = null;
     selectedSecondImage = null;

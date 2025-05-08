@@ -177,6 +177,7 @@ class DataProvider extends ChangeNotifier {
   //================== Variants ==================//
   getAllVariant() async {
     await _fetchList<Variant>("variants", (data) {
+       print(data);
       _allVariants = data;
       _filteredVariants = List.from(_allVariants);
     });
@@ -198,6 +199,7 @@ class DataProvider extends ChangeNotifier {
   getAllProduct() async {
     await _fetchList<Product>("products", (data) {
       _allProducts = data;
+       print(data);
       _filteredProducts = List.from(_allProducts);
     });
   }

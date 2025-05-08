@@ -27,6 +27,7 @@ class HttpService  {
 
   Future<Response> addItem({required String endpointUrl, required dynamic itemData}) async {
     try {
+      print(itemData);
       final response = await GetConnect().post('$baseUrl/$endpointUrl',itemData);
       print(response.body);
       return response;
